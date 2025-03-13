@@ -1,0 +1,119 @@
+// A little game. Finished in 15-01-2025
+
+class Game
+{
+    static void Main(string[] args)
+    {
+        User player = new();
+        Enemy ai = new();
+
+        string decision = string.Empty;
+        
+        Console.WriteLine("- THE GAME STARTS! -");
+        User.Options();
+
+        while ((player.health > 0 && ai.health > 0) && (decision != "surrender"))
+        {
+            int userAttacking = RollingDice();
+            int aiAttacking = RollingDice();
+
+            Console.WriteLine("=============================");
+            decision = Console.ReadLine().ToLower();
+            Console.WriteLine("=============================");
+
+            if (decision == "")
+            {
+                break;
+            }
+            else {User.OutputUserMessage(decision);}
+
+            switch (decision) {
+                case "attack":
+                    Console.WriteLine("\nUser[{0}]\n=======\nPC[{1}]\n", userAttacking, aiAttacking);
+
+                    if (userAttacking > aiAttacking)
+                    {
+                        Console.WriteLine("User dealt more damage");
+                        int amount = Damaged(userAttacking, ref ai.health);
+
+                        Console.WriteLine("\nPC health || " + amount + "\n");
+                    }
+                    else if (userAttacking < aiAttacking)
+                    {
+                        Console.WriteLine("PC dealt more damage");
+                        int amount_2 = Damaged(aiAttacking, ref player.health);
+
+                        Console.WriteLine("\nMy health || " + amount_2 + "\n");
+                    }
+                    else { Console.WriteLine("It's a tie. Nothing happened."); }
+                    break;
+
+                case "menu":
+                    User.Options();
+                    break;
+
+                case "see":
+                    player.GetHealth();
+                    break;
+                
+                default:
+                    if (decision == "surrender")
+                    {
+                        Console.WriteLine("OK...");
+                    }
+                    else { Console.WriteLine("That command doesn't exist /..."); }
+                    break;
+            }
+        }
+        Console.WriteLine("\n=============================");
+        Console.WriteLine("PC health || " + ai.health);
+        Console.WriteLine("My health || " + player.health);
+
+        if ((player.health <= 0) || (player.health < ai.health))
+        {
+            Console.WriteLine("\nPC is the Winner!!!");
+        }
+        else if ((ai.health <= 0) || (ai.health < player.health)) {
+            Console.WriteLine("\nUser is the Winner!!!");
+        }
+        else {Console.WriteLine("\nIt's a tie...");}
+    }
+
+    private static int RollingDice()
+    {
+        Random rng = new();
+
+        int dice = rng.Next(1, 31);
+        return dice;
+    }
+
+    private static int Damaged(int damage, ref int life) {
+        life -= damage;
+        return life;
+    }
+}
+
+public class Enemy
+{
+    public int health = 150;
+}
+
+public class User
+{
+    public int health = 150;
+
+    public static void Options()
+    {
+        Console.Write("\nYou have this available actions -\n1.Attack.\n2.Menu\n3.See [health].\n4.Surrender...\n");
+    }
+
+    public static void OutputUserMessage(string option)
+    {
+        Console.WriteLine("\nUser has used the -{0}- option.", option);
+    }
+
+    public void GetHealth()
+    {
+        Console.WriteLine("\nMy health || " + health + "\n");
+    }
+}

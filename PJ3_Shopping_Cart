@@ -11,7 +11,7 @@ public class Pruebas
         float priceItem;
         bool stopProgram;
 
-        Console.WriteLine("Welcome!\nWhat would you like to do? Type -Options-");
+        Console.WriteLine("Welcome!\nWhat would you like to do? Type -Option-");
 
         do
         {

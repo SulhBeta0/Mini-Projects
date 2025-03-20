@@ -1,1 +1,2 @@
-All these projects are made with the .NET 8.0
+This repository showcases my work as I improve my programming skills and logical thinking.
+Each project is a small console application built with **.NET 8.0**.
